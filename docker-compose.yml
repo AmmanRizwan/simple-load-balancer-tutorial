@@ -1,0 +1,61 @@
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    depends_on:
+      - server_1
+      - server_2
+      - server_3
+      - server_4
+    networks:
+      - load_bridge
+
+  server_1:
+    build: .
+    expose:
+      - "8000"
+    volumes:
+      - server_data1:/app
+    networks:
+      - load_bridge
+
+  server_2:
+    build: .
+    expose:
+      - "8000"
+    volumes:
+      - server_data2:/app
+    networks:
+      - load_bridge
+  
+  server_3:
+    build: .
+    expose:
+      - "8000"
+    volumes:
+      - server_data3:/app
+    networks:
+      - load_bridge
+
+  server_4:
+    build: .
+    expose:
+      - "8000"
+    volumes:
+      - server_data4:/app
+    networks:
+      - load_bridge
+  
+
+volumes:
+  server_data1:
+  server_data2:
+  server_data3:
+  server_data4:
+
+networks:
+  load_bridge:
+    driver: bridge
